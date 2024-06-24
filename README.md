@@ -13,7 +13,7 @@ This is a landing page
 ### Structure
 
 ```sh
-|- openedu
+|- easy-gun
   |- src
     |- assets
     |- components
@@ -21,9 +21,6 @@ This is a landing page
     |- router
     |- utils
   package.json
-  .env.development # variables for development environment
-  .env.staging # variables for staging environment
-  .env.production # variables for production environment
   ...
 ```
 
