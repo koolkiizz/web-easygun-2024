@@ -1,0 +1,12 @@
+**/dist
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+**/.next
+**/cache
+**/.cache
+**/package.json
+**/package-lock.json
+**/public
+**/build
