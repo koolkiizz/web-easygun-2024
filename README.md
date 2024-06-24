@@ -1,30 +1,86 @@
-# React + TypeScript + Vite
+# Easygun landing page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a landing page
 
-Currently, two official plugins are available:
+### Recommended system
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Nodejs: >= 18 [https://nodejs.org/download/release/v16.20.2/](https://nodejs.org/download/release/v16.20.2/)
+  - Recommend: use [Fast node manager](https://github.com/Schniz/fnm)
+- Pnpm: latest version [https://pnpm.io/installation](https://pnpm.io/installation)
+  - update latest version: `npm install -g pnpm`.
+- Editor: `vscode`.
 
-## Expanding the ESLint configuration
+### Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-};
+```sh
+|- openedu
+  |- src
+    |- assets
+    |- components
+    |- pages
+    |- router
+    |- utils
+  package.json
+  .env.development # variables for development environment
+  .env.staging # variables for staging environment
+  .env.production # variables for production environment
+  ...
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Packages
+
+- use `vite`, `react-router`, `swr`, `shadcn UI`, `tailwindcss`, ...
+
+### Scripts
+
+> Workspace is always root repo.
+
+- Installation
+
+```sh
+pnpm install
+```
+
+- Add packages
+
+```sh
+pnpm add {npm_package}
+```
+
+- Run dev
+
+```sh
+pnpm dev
+```
+
+- Run build
+
+```sh
+pnpm build
+```
+
+- Run type check for typescript
+
+```sh
+pnpm typecheck
+```
+
+- Run eslint
+
+```sh
+pnpm lint
+pnpm lint:fix
+```
+
+- Run prettier format
+
+```sh
+pnpm format
+pnpm format:fix
+```
+
+- Run clean for remove `node_modules`, `dist`, `.next`.
+
+```sh
+pnpm clean
+```
