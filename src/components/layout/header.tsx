@@ -1,6 +1,43 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
+import AddCoin from '../../assets/add-coin.png';
+import Fanpage from '../../assets/fanpage.png';
+import Logo1 from '../../assets/logo-1.png';
+// import Logo from '../../assets/logo.png';
+import ViewMore from '../../assets/view-more.png';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
+
+const VIEW_MORE_MENU = [
+  {
+    label: 'Tin tức',
+    key: 'new',
+    onClick: undefined,
+  },
+  {
+    label: 'Sự kiện',
+    key: 'event',
+    onClick: undefined,
+  },
+  {
+    label: 'Cẩm nang',
+    key: 'tips',
+    onClick: undefined,
+  },
+  {
+    label: 'Comming soon',
+    key: 'later',
+    onClick: undefined,
+  },
+];
 
 const Header: React.FC = () => {
   const scrollToSection = (sectionId: string) => {
@@ -11,35 +48,50 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-blue-600 text-white p-4 fixed w-full z-10">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold">MyLandingPage</h1>
-        <nav>
-          <ul className="flex space-x-4">
-            <li>
-              <Button onClick={() => scrollToSection('hero')} className="hover:text-gray-300">
-                Home
-              </Button>
-            </li>
-            <li>
-              <Button onClick={() => scrollToSection('about')} className="hover:text-gray-300">
-                About
-              </Button>
-            </li>
-            <li>
-              <Button onClick={() => scrollToSection('services')} className="hover:text-gray-300">
-                Services
-              </Button>
-            </li>
-            <li>
-              <Button onClick={() => scrollToSection('contact')} className="hover:text-gray-300">
-                Contact
-              </Button>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+    <div className="flex justify-between items-center h-full bg-[#964B00] p-[12px]">
+      <Link to={'#'}>
+        <img src={Logo1} alt="Logo" className="h-full transform translate-y-[-16px]" />
+      </Link>
+      <nav>
+        <ul className="flex items-center gap-[44px] py-[12px]">
+          <li className="flex items-center">
+            <Button onClick={() => scrollToSection('hero')} className="p-0 m-0 h-auto">
+              <Link to={''} target="_blank">
+                <img src={Fanpage} alt="fanpage" />
+              </Link>
+            </Button>
+          </li>
+          <li className="flex items-center">
+            <Button onClick={() => scrollToSection('about')} className="p-0 m-0 h-auto">
+              <Link to={''} target="_blank">
+                <img src={AddCoin} alt="add-coin" />
+              </Link>
+            </Button>
+          </li>
+          <li className="flex items-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button onClick={() => scrollToSection('services')} className="p-0 m-0 h-auto">
+                  <img src={ViewMore} alt="view-more" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 z-11 bg-white mt-[10px] rounded-[8px]">
+                <DropdownMenuGroup>
+                  {VIEW_MORE_MENU.map(item => (
+                    <div className="cursor-pointer hover:bg-slate-200">
+                      <DropdownMenuItem key={item.key} onClick={item.onClick}>
+                        <span className="cursor-pointer">{item.label}</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </div>
+                  ))}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </li>
+        </ul>
+      </nav>
+    </div>
   );
 };
 

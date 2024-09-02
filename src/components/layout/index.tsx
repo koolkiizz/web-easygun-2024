@@ -5,14 +5,13 @@ import Header from './header';
 
 const Layout: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <main className="flex-grow container mx-auto p-4">
+    <div className="h-screen flex flex-col">
+      <header className="fixed top-0 left-0 w-full h-[90px] z-10">
+        <Header />
+      </header>
+      <main className="mt-[90px] h-[calc(100vh-90px)] overflow-auto">
         <Outlet />
       </main>
-      <footer className="bg-gray-800 text-white p-4 text-center">
-        &copy; {new Date().getFullYear()} MyApp. All rights reserved.
-      </footer>
     </div>
   );
 };

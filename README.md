@@ -44,6 +44,12 @@ pnpm install
 pnpm add {npm_package}
 ```
 
+- Add shadcn UI
+
+```sh
+pnpm dlx shadcn@latest add {name_component}
+```
+
 - Run dev
 
 ```sh
