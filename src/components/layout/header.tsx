@@ -75,7 +75,7 @@ const Header: React.FC = () => {
                   <img src={ViewMore} alt="view-more" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 z-11 bg-white mt-[10px] rounded-[8px]">
+              <DropdownMenuContent className="w-44 z-15 bg-white rounded-[8px]">
                 <DropdownMenuGroup>
                   {VIEW_MORE_MENU.map(item => (
                     <div className="cursor-pointer hover:bg-slate-200">
