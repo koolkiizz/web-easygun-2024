@@ -39,7 +39,7 @@ const VIEW_MORE_MENU = [
   },
 ];
 
-const Header: React.FC = () => {
+const SecondaryHeader: React.FC = () => {
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -95,4 +95,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default SecondaryHeader;

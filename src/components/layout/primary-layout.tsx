@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import Header from './header';
 
-const Layout: React.FC = () => {
+const PrimaryLayout: React.FC = () => {
   return (
     <div className="h-screen flex flex-col">
       <header className="fixed top-0 left-0 w-full h-[90px] z-0">
@@ -16,4 +16,4 @@ const Layout: React.FC = () => {
   );
 };
 
-export default Layout;
+export default PrimaryLayout;
