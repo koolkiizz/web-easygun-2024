@@ -42,7 +42,7 @@ const Landingpage: React.FC = () => {
             <img src={PlayStoreIcon} alt="play-store-download" className="h-[48px] w-[48px]" />
             <div className="flex flex-col items-start">
               <span>TẢI GAME TỪ</span>
-              <span className="font-bold">AFK</span>
+              <span className="font-bold">APK</span>
             </div>
           </Button>
           <Button className=" hover:bg-transparent m-0 flex items-center gap-[12px] px-[16px] py-[12px] bg-[#646464] h-auto rounded-[20px] text-white text-lg hover:bg-[#646464] hover:opacity-85">
