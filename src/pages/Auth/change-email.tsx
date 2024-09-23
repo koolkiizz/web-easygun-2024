@@ -33,23 +33,23 @@ const ChangeEmailPage: React.FC = () => {
     <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white">
       <Card className="w-full border-none shadow-none">
         <CardHeader>
-          <CardTitle>Change Email Address</CardTitle>
-          <CardDescription>Update your account email address</CardDescription>
+          <CardTitle>Đổi địa chỉ email</CardTitle>
+          <CardDescription>Cập nhập địa chỉ email mới của bạn</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid w-full items-center gap-4">
+            <div className="grid w-full items-center gap-8">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="currentEmail">Current Email</Label>
+                <Label htmlFor="currentEmail">Email hiện tại</Label>
                 <Input
                   id="currentEmail"
                   type="email"
                   placeholder="your.current@email.com"
                   {...register('currentEmail', {
-                    required: 'Current email is required',
+                    required: 'Email hiện tại là bắt buộc',
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: 'Invalid email address',
+                      message: 'Không đúng cú pháp của email',
                     },
                   })}
                 />
@@ -61,16 +61,16 @@ const ChangeEmailPage: React.FC = () => {
                 )}
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="newEmail">New Email</Label>
+                <Label htmlFor="newEmail">Email mới</Label>
                 <Input
                   id="newEmail"
                   type="email"
                   placeholder="your.new@email.com"
                   {...register('newEmail', {
-                    required: 'New email is required',
+                    required: 'Email mới là bắt buộc',
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: 'Invalid email address',
+                      message: 'Không đúng cú pháp của email',
                     },
                   })}
                 />
@@ -82,8 +82,8 @@ const ChangeEmailPage: React.FC = () => {
                 )}
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" {...register('password', { required: 'Password is required' })} />
+                <Label htmlFor="password">Mật khẩu</Label>
+                <Input id="password" type="password" {...register('password', { required: 'Mật khẩu là bắt buộc' })} />
                 {errors.password && (
                   <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
@@ -96,17 +96,15 @@ const ChangeEmailPage: React.FC = () => {
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button variant="outline" onClick={() => window.history.back()}>
-            Cancel
+            Hủy
           </Button>
-          <Button onClick={handleSubmit(onSubmit)}>Change Email</Button>
+          <Button onClick={handleSubmit(onSubmit)}>Đổi Email</Button>
         </CardFooter>
         {isSuccess && (
           <Alert className="mt-4">
             <CheckCircle2 className="h-4 w-4" />
             <AlertTitle>Success</AlertTitle>
-            <AlertDescription>
-              Your email has been successfully changed. Please check your new email for confirmation.
-            </AlertDescription>
+            <AlertDescription>Bạn đã cập nhập Email thành công. Vui lòng kiểm tra lại Email mới này.</AlertDescription>
           </Alert>
         )}
       </Card>

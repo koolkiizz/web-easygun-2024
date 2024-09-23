@@ -28,29 +28,29 @@ const VerifyEmailPage: React.FC = () => {
     <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white">
       <Card className=" w-full border-none shadow-none">
         <CardHeader>
-          <CardTitle>Verify Your Email</CardTitle>
-          <CardDescription>Enter the code sent to your email address</CardDescription>
+          <CardTitle>Xác nhận Email</CardTitle>
+          <CardDescription>Vui lòng điền code đã được gửi tới Email của bạn</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid w-full items-center gap-4">
+            <div className="grid w-full items-center gap-8">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="verificationCode">Verification Code</Label>
+                <Label htmlFor="verificationCode">Mã xác thực</Label>
                 <Input
                   id="verificationCode"
-                  placeholder="Enter your 6-digit code"
+                  placeholder="Điền mã xác thực 6 số"
                   {...register('verificationCode', {
-                    required: 'Verification code is required',
+                    required: 'Mã xác thực là bắt buộc',
                     pattern: {
                       value: /^[0-9]{6}$/,
-                      message: 'Must be a 6-digit number',
+                      message: 'Mã xác thực phải có 6 số',
                     },
                   })}
                 />
                 {errors.verificationCode && (
                   <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Error</AlertTitle>
+                    <AlertTitle>Thất bại</AlertTitle>
                     <AlertDescription>{errors.verificationCode.message}</AlertDescription>
                   </Alert>
                 )}
@@ -59,8 +59,8 @@ const VerifyEmailPage: React.FC = () => {
           </form>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button variant="outline">Resend Code</Button>
-          <Button onClick={handleSubmit(onSubmit)}>Verify</Button>
+          <Button variant="outline">Gửi lại mã xác thực</Button>
+          <Button onClick={handleSubmit(onSubmit)}>Xác thực</Button>
         </CardFooter>
       </Card>
     </div>

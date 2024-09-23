@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { CardTitle } from '../ui/card';
 
 // Define the form schema
 const formSchema = z
@@ -42,7 +43,7 @@ const ChangePasswordForm = () => {
   if (isSubmitted) {
     return (
       <Alert>
-        <AlertDescription>Your password has been successfully changed.</AlertDescription>
+        <AlertDescription>Mật khẩu đã được cập nhập.</AlertDescription>
       </Alert>
     );
   }
@@ -50,12 +51,13 @@ const ChangePasswordForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <CardTitle>Đổi mật khẩu</CardTitle>
         <FormField
           control={form.control}
           name="currentPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Current Password</FormLabel>
+              <FormLabel>Mật khẩu hiện tại</FormLabel>
               <FormControl>
                 <Input type="password" {...field} />
               </FormControl>
@@ -68,11 +70,11 @@ const ChangePasswordForm = () => {
           name="newPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>New Password</FormLabel>
+              <FormLabel>Mật khẩu mới</FormLabel>
               <FormControl>
                 <Input type="password" {...field} />
               </FormControl>
-              <FormDescription>Password must be at least 6 characters long.</FormDescription>
+              <FormDescription>Mật khẩu của bạn phải dài hơn 6 ký tự.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -82,7 +84,7 @@ const ChangePasswordForm = () => {
           name="confirmNewPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm New Password</FormLabel>
+              <FormLabel>Xác nhận mật khẩu mới</FormLabel>
               <FormControl>
                 <Input type="password" {...field} />
               </FormControl>
@@ -90,7 +92,7 @@ const ChangePasswordForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Change Password</Button>
+        <Button type="submit">Đổi Mật Khẩu</Button>
       </form>
     </Form>
   );

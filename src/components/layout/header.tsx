@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Account from '@/assets/account.png';
@@ -9,6 +9,7 @@ import ForgotPasswordIcon from '@/assets/forgot-password.png';
 import LoginIcon from '@/assets/login.png';
 import RegisterIcon from '@/assets/register.png';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hook/useAuth';
 import { ROUTES } from '@/router/constants';
 import Logo1 from '../../assets/logo-1.png';
 import {
@@ -40,6 +41,11 @@ const ACCOUNT_MENU = [
     label: 'Xác thực 2 lớp',
     key: 'duplicate-verify',
     href: ROUTES.DUPLICATE_VERIFY,
+  },
+  {
+    label: 'Đăng xuất',
+    key: 'log-out',
+    href: ROUTES.LOGOUT,
   },
 ];
 
@@ -89,11 +95,10 @@ const NAV_LOGINED = [
           <DropdownMenuGroup>
             {ACCOUNT_MENU.map(item => (
               <div className="cursor-pointer hover:bg-slate-200" key={item.key}>
-                <DropdownMenuItem key={item.key}>
-                  <Link to={item.href} className="cursor-pointer">
-                    {item.label}
-                  </Link>
-                </DropdownMenuItem>
+                <Link to={item.href} className="cursor-pointer" key={item.key}>
+                  <DropdownMenuItem>{item.label}</DropdownMenuItem>
+                </Link>
+
                 <DropdownMenuSeparator />
               </div>
             ))}
@@ -141,14 +146,7 @@ const NAV_LOGINED = [
 ];
 
 const Header: React.FC = () => {
-  const [isLogined, setIsLogined] = useState('');
-  const token = localStorage.getItem('token');
-
-  useEffect(() => {
-    if (token) {
-      setIsLogined(token);
-    }
-  }, [token]);
+  const { isAuthenticated } = useAuth();
 
   return (
     <div className="flex justify-between items-center h-full bg-[#964B00] p-[12px]">
@@ -157,7 +155,7 @@ const Header: React.FC = () => {
       </Link>
       <nav>
         <ul className="flex items-center gap-[44px] py-[12px]">
-          {(isLogined ? NAV_LOGINED : NAV_NORMAL).map(item => (
+          {(isAuthenticated ? NAV_LOGINED : NAV_NORMAL).map(item => (
             <li className="flex items-center" key={item.key}>
               <Button variant={'ghost'} className="p-0 m-0 h-auto hover:bg-transparent h-[48px]">
                 <Link to={item.href} className="h-full">

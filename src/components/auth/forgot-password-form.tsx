@@ -36,7 +36,8 @@ const ForgotPasswordForm = () => {
     return (
       <Alert>
         <AlertDescription>
-          If an account exists for {form.getValues().email}, you will receive password reset instructions.
+          Nếu tài khoản của bạn đăng ký địa chỉ email: {form.getValues().email}, bạn sẽ nhận được mật khẩu tại địa chỉ
+          này.
         </AlertDescription>
       </Alert>
     );
@@ -54,12 +55,12 @@ const ForgotPasswordForm = () => {
               <FormControl>
                 <Input type="email" placeholder="johndoe@example.com" {...field} />
               </FormControl>
-              <FormDescription>Enter the email address associated with your account.</FormDescription>
+              <FormDescription>Nhập Email đã được đăng ký tài khoản</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Reset Password</Button>
+        <Button type="submit">Đặt Lại Mật Khẩu</Button>
       </form>
     </Form>
   );

@@ -69,6 +69,13 @@ export const router = createBrowserRouter([
           return { Component };
         },
       },
+      {
+        path: ROUTES.LOGOUT,
+        async lazy() {
+          const { default: Component } = await import('@/pages/Auth/log-out');
+          return { Component };
+        },
+      },
     ],
   },
 ]);

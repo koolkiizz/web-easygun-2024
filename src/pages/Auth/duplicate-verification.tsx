@@ -64,9 +64,9 @@ const EmailVerificationFlow: React.FC = () => {
     return (
       <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white">
         <Card className=" w-full border-none shadow-none">
-          <CardHeader>
-            <CardTitle>Email Verification</CardTitle>
-            <CardDescription>Step 1: Checking Email Status</CardDescription>
+          <CardHeader className="gap-4">
+            <CardTitle>Kiểm tra trạng thái email</CardTitle>
+            <CardDescription>Step 1: Trạng thái kích hoạt email</CardDescription>
             <CardDescription>
               <ul className="list-disc">
                 <li>
@@ -84,27 +84,27 @@ const EmailVerificationFlow: React.FC = () => {
             {checkStatus === 'checking' && (
               <div className="flex flex-col items-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-4"></div>
-                <p>Checking your email status...</p>
+                <p>Đang kiểm tra...</p>
               </div>
             )}
             {checkStatus === 'success' && (
               <Alert>
                 <CheckCircle2 className="h-4 w-4" />
-                <AlertTitle>Success</AlertTitle>
-                <AlertDescription>Your email status has been verified.</AlertDescription>
+                <AlertTitle>Thành công</AlertTitle>
+                <AlertDescription>Email của bạn đã kích hoạt.</AlertDescription>
               </Alert>
             )}
             {checkStatus === 'failure' && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Failed</AlertTitle>
-                <AlertDescription>We couldn't verify your email status. Please try again later.</AlertDescription>
+                <AlertTitle>Thất bại</AlertTitle>
+                <AlertDescription>Không thể kích hoạt trạng thái email. Vui lòng thử lại.</AlertDescription>
               </Alert>
             )}
           </CardContent>
           <CardFooter className="flex justify-end">
             <Button onClick={() => setStep('verify')} disabled={checkStatus !== 'success'}>
-              Next
+              Tiếp
             </Button>
           </CardFooter>
         </Card>
@@ -116,27 +116,27 @@ const EmailVerificationFlow: React.FC = () => {
     <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white">
       <Card className=" w-full border-none shadow-none">
         <CardHeader>
-          <CardTitle>Email Verification</CardTitle>
-          <CardDescription>Step 2: Verify Your Email</CardDescription>
+          <CardTitle>Xác thực 2 lớp</CardTitle>
+          <CardDescription>Step 2: Trạng thái kích hoạt xác thực email 2 lớp</CardDescription>
         </CardHeader>
         <CardContent>
           {!isCodeSent ? (
             <Button onClick={handleSendCode} className="w-full">
-              Send Verification Code
+              Gửi mã xác thực
             </Button>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="verificationCode">Verification Code</Label>
+                  <Label htmlFor="verificationCode">Xác thực code</Label>
                   <Input
                     id="verificationCode"
                     placeholder="Enter 6-digit code"
                     {...register('verificationCode', {
-                      required: 'Verification code is required',
+                      required: 'Xác thực code là bắt buộc',
                       pattern: {
                         value: /^[0-9]{6}$/,
-                        message: 'Must be a 6-digit number',
+                        message: 'Phải gồm 6 số.',
                       },
                     })}
                   />
@@ -149,34 +149,34 @@ const EmailVerificationFlow: React.FC = () => {
                 </div>
               </div>
               <p className="text-sm text-gray-500 mt-2">
-                Time remaining: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+                Thời gian còn lại: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
               </p>
             </form>
           )}
           {verificationStatus === 'success' && (
             <Alert className="mt-4">
               <CheckCircle2 className="h-4 w-4" />
-              <AlertTitle>Success</AlertTitle>
-              <AlertDescription>Your email has been successfully verified.</AlertDescription>
+              <AlertTitle>Thành công</AlertTitle>
+              <AlertDescription>Email của bạn đã được xác thực 2 lớp.</AlertDescription>
             </Alert>
           )}
           {verificationStatus === 'error' && (
             <Alert variant="destructive" className="mt-4">
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>Incorrect verification code. Please try again.</AlertDescription>
+              <AlertTitle>Thất bại</AlertTitle>
+              <AlertDescription>Mã xác thực không đúng. Vui lòng thử lại.</AlertDescription>
             </Alert>
           )}
           {verificationStatus === 'timeout' && (
             <Alert variant="destructive" className="mt-4">
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Timeout</AlertTitle>
-              <AlertDescription>Verification code has expired. Please request a new code.</AlertDescription>
+              <AlertTitle>Hết giờ</AlertTitle>
+              <AlertDescription>Mã xác thực đã hết hạn. Vui lòng nhấn yêu cầu gửi lại.</AlertDescription>
             </Alert>
           )}
         </CardContent>
         <CardFooter className="flex justify-end">
-          {isCodeSent && <Button onClick={handleSubmit(onSubmit)}>Verify</Button>}
+          {isCodeSent && <Button onClick={handleSubmit(onSubmit)}>Xác thực</Button>}
         </CardFooter>
       </Card>
     </div>

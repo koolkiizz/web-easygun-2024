@@ -12,18 +12,18 @@ import { ROUTES } from '@/router/constants';
 const formSchema = z
   .object({
     username: z.string().min(2, {
-      message: 'Username must be at least 2 characters.',
+      message: 'Username phải có ít nhất 2 ký tự',
     }),
     email: z.string().email({
-      message: 'Please enter a valid email address.',
+      message: 'Vui lòng nhập địa chỉ Email.',
     }),
     password: z.string().min(6, {
-      message: 'Password must be at least 6 characters.',
+      message: 'Password phải có ít nhất 6 ký tự.',
     }),
     confirmPassword: z.string(),
   })
   .refine(data => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
+    message: 'Mật khẩu không chính xác',
     path: ['confirmPassword'],
   });
 
@@ -56,9 +56,9 @@ const SignUpForm = () => {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="johndoe" {...field} />
+                <Input placeholder="easygun" {...field} />
               </FormControl>
-              <FormDescription>This is your public display name.</FormDescription>
+              <FormDescription>Tên hiển thị trên hệ thống.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -70,7 +70,7 @@ const SignUpForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="johndoe@example.com" {...field} />
+                <Input type="email" placeholder="easygun@example.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -81,7 +81,7 @@ const SignUpForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Mật khẩu</FormLabel>
               <FormControl>
                 <Input type="password" {...field} />
               </FormControl>
@@ -94,7 +94,7 @@ const SignUpForm = () => {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel>Nhập lại mật khẩu</FormLabel>
               <FormControl>
                 <Input type="password" {...field} />
               </FormControl>
@@ -102,7 +102,7 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Sign up</Button>
+        <Button type="submit">Đăng Ký</Button>
       </form>
     </Form>
   );

@@ -8,15 +8,17 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/hook/useAuth';
 import { ROUTES } from '@/router/constants';
+import { CardTitle } from '../ui/card';
 
 // Define the form schema
 const formSchema = z.object({
   username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
+    message: 'Username phải có ít nhất 2 ký tự.',
   }),
   password: z.string().min(6, {
-    message: 'Password must be at least 6 characters.',
+    message: 'Password phải có ít nhất 5 ký tự.',
   }),
   rememberMe: z.boolean().default(false),
 });
@@ -30,10 +32,10 @@ const LoginForm = () => {
       rememberMe: false,
     },
   });
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is already logged in
     const token = localStorage.getItem('token');
     if (token) {
       navigate(ROUTES.HOMEPAGE); // Redirect to dashboard if already logged in
@@ -42,18 +44,19 @@ const LoginForm = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    // Here you would typically send the login request to your backend
-    // const hashedPassword = sha256(values.password).toString();
 
-    localStorage.setItem('token', 'token');
+    const dummyToken = 'dummy-token';
 
-    // Redirect to dashboard
+    login(dummyToken);
+
+    // Redirect to homepage
     navigate(ROUTES.HOMEPAGE);
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+        <CardTitle>Đăng nhập</CardTitle>
         <FormField
           control={form.control}
           name="username"
@@ -61,7 +64,7 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="johndoe" {...field} />
+                <Input placeholder="easygun" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -72,7 +75,7 @@ const LoginForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Mật khẩu</FormLabel>
               <FormControl>
                 <Input type="password" {...field} />
               </FormControl>
@@ -89,22 +92,22 @@ const LoginForm = () => {
                 <Checkbox checked={field.value} onCheckedChange={field.onChange} />
               </FormControl>
               <div className="space-y-1 leading-none">
-                <FormLabel>Remember me</FormLabel>
-                <FormDescription>Stay logged in on this device</FormDescription>
+                <FormLabel>Nhớ tài khoản</FormLabel>
+                <FormDescription>Giữ trạng thái đăng nhập của tài khoản tại thiết bị này.</FormDescription>
               </div>
             </FormItem>
           )}
         />
         <Button type="submit" className="w-full">
-          Log in
+          Đăng Nhập
         </Button>
         <div className="flex justify-between">
           <Button variant="link" onClick={() => console.log('Forgot password clicked')} type="button">
-            <Link to={ROUTES.FORGOT_PASSWORD}> Forgot password?</Link>
+            <Link to={ROUTES.FORGOT_PASSWORD}> Quên mật khẩu?</Link>
           </Button>
 
           <Button variant="link" onClick={() => console.log('Sign up clicked')} type="button">
-            <Link to={ROUTES.SIGNUP}>Sign up</Link>
+            <Link to={ROUTES.SIGNUP}>Đăng ký</Link>
           </Button>
         </div>
       </form>
