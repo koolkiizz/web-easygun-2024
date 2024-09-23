@@ -41,6 +41,34 @@ export const router = createBrowserRouter([
           return { Component };
         },
       },
+      {
+        path: ROUTES.CHANGE_PASSWORD,
+        async lazy() {
+          const { default: Component } = await import('@/pages/Auth/change-password');
+          return { Component };
+        },
+      },
+      {
+        path: ROUTES.VERIFy_EMAIL,
+        async lazy() {
+          const { default: Component } = await import('@/pages/Auth/verify-email');
+          return { Component };
+        },
+      },
+      {
+        path: ROUTES.DUPLICATE_VERIFY,
+        async lazy() {
+          const { default: Component } = await import('@/pages/Auth/duplicate-verification');
+          return { Component };
+        },
+      },
+      {
+        path: ROUTES.CHANGE_EMAIL,
+        async lazy() {
+          const { default: Component } = await import('@/pages/Auth/change-email');
+          return { Component };
+        },
+      },
     ],
   },
 ]);
