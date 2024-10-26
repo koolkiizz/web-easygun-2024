@@ -4,4 +4,6 @@ export const endpoints = {
   register: () => `/register`,
   requestVerifyEmail: () => `/verifyEmail`,
   verifyEmail: () => `/validateVerifyEmail`,
+  requestDuplicateVerify: () => `/active2fa`,
+  duplicateVerify: () => `/validate2fa`,
 };

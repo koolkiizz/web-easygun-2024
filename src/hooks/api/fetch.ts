@@ -35,6 +35,7 @@ export function usePost<T, P>(
     data,
     error,
     mutate,
+    isLoading,
   }: SWRResponse<BaseResponse<T>, Error> = useSWR<BaseResponse<T>, Error>(url, null, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
@@ -50,7 +51,7 @@ export function usePost<T, P>(
   return {
     executePost,
     data: data,
-    isLoading: !error && !data,
+    isLoading: isLoading,
     isError: error,
   };
 }

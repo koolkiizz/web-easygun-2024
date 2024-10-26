@@ -1,9 +1,7 @@
-import { AlertCircle, CheckCircle2, Shield } from 'lucide-react';
+import { CheckCircle2, Circle, CircleDot } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ROUTES } from '@/router/constants';
 
@@ -13,78 +11,119 @@ interface VerifyStatusProps {
 }
 
 const VerifyStatus: React.FC<VerifyStatusProps> = ({ verifyEmail, className }) => {
-  const getVerificationStatus = () => {
-    switch (verifyEmail) {
-      case 0:
-        return {
-          variant: 'destructive' as const,
-          icon: <AlertCircle className="h-4 w-4" />,
-          title: 'Chưa xác thực',
-          description: 'Tài khoản chưa được xác thực email',
-          actions: (
-            <div className="mt-2 flex gap-2">
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/verify-email">Xác thực email</Link>
-              </Button>
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/duplicate-verify-email">Xác thực email 2 lớp</Link>
-              </Button>
-            </div>
-          ),
-        };
-      case 1:
-        return {
-          variant: 'default' as const,
-          icon: <Shield className="h-4 w-4" />,
-          title: 'Xác thực một phần',
-          description: 'Tài khoản đã xác thực email nhưng chưa xác thực 2 lớp',
-          actions: (
-            <div className="mt-2">
-              <Button variant="default" size="sm" asChild>
-                <Link to={ROUTES.DUPLICATE_VERIFY}>Xác thực email 2 lớp</Link>
-              </Button>
-            </div>
-          ),
-        };
-      case 2:
-        return {
-          variant: 'default' as const,
-          icon: <CheckCircle2 className="h-4 w-4" />,
-          title: 'Đã xác thực',
-          description: 'Tài khoản đã được xác thực đầy đủ',
-          actions: null,
-        };
-      default:
-        return {
-          variant: 'destructive' as const,
-          icon: <AlertCircle className="h-4 w-4" />,
-          title: 'Trạng thái không xác định',
-          description: 'Không thể xác định trạng thái xác thực của tài khoản',
-          actions: (
-            <div className="flex flex-col gap-[12px]">
-              <Button variant="default" size="sm" asChild>
-                <Link to={ROUTES.VERIFy_EMAIL}>Xác thực email</Link>
-              </Button>
-              <Button variant="outline" size="sm" asChild disabled>
-                <Link to={ROUTES.DUPLICATE_VERIFY}>Xác thực email 2 lớp</Link>
-              </Button>
-            </div>
-          ),
-        };
+  const steps = [
+    {
+      title: 'Xác thực email',
+      description: 'Xác nhận địa chỉ email của bạn',
+      path: ROUTES.VERIFy_EMAIL,
+    },
+    {
+      title: 'Xác thực 2 lớp',
+      description: 'Thiết lập bảo mật 2 lớp cho tài khoản',
+      path: ROUTES.DUPLICATE_VERIFY,
+    },
+  ];
+
+  const getStepStatus = (stepIndex: number) => {
+    if (verifyEmail >= stepIndex + 1) {
+      return 'completed';
     }
+    if (verifyEmail === stepIndex) {
+      return 'current';
+    }
+    return 'pending';
   };
 
-  const status = getVerificationStatus();
-
   return (
-    <Alert variant={status.variant} className={cn('flex flex-col items-start', className)}>
-      <div className="flex items-center gap-2">
-        {status.icon}
-        <AlertTitle>{status.title}</AlertTitle>
+    <div className={cn('w-full p-6 rounded-lg border bg-card', className)}>
+      <h3 className="text-lg font-semibold mb-6">Trạng thái xác thực tài khoản</h3>
+
+      <div className="space-y-8">
+        {steps.map((step, index) => {
+          const status = getStepStatus(index);
+
+          return (
+            <div key={index} className="relative">
+              {/* Connection line between steps */}
+              {index < steps.length - 1 && (
+                <div
+                  className={cn('absolute left-[30px] top-[48px] h-[calc(100%)] w-[2px]', {
+                    'bg-primary': status === 'completed',
+                    'bg-primary/50': status === 'current',
+                    'bg-muted': status === 'pending',
+                  })}
+                />
+              )}
+
+              <div
+                className={cn('flex items-start gap-4 p-4 rounded-lg transition-colors', {
+                  'bg-primary/5 border border-primary/20': status === 'current',
+                  'bg-muted/30': status === 'completed',
+                })}
+              >
+                {/* Step indicator */}
+                <div className="relative flex h-[30px] w-[30px] shrink-0 items-center justify-center">
+                  {status === 'completed' ? (
+                    <CheckCircle2 className="h-[30px] w-[30px] text-primary animate-in fade-in text-green-600" />
+                  ) : status === 'current' ? (
+                    <div className="relative">
+                      <CircleDot className="h-[30px] w-[30px] text-primary animate-pulse" />
+                      <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-primary bg-red-700 animate-ping" />
+                    </div>
+                  ) : (
+                    <Circle className="h-[30px] w-[30px] text-muted-foreground" />
+                  )}
+                </div>
+
+                {/* Step content */}
+                <div className="flex-1">
+                  <div
+                    className={cn('flex items-center gap-2 text-base font-semibold', {
+                      'text-primary': status === 'current',
+                      'text-primary/80': status === 'completed',
+                      'text-muted-foreground': status === 'pending',
+                    })}
+                  >
+                    <span>{step.title}</span>
+                    {status === 'current' && (
+                      <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Bước hiện tại</span>
+                    )}
+                  </div>
+
+                  <div
+                    className={cn('mt-1 text-sm', {
+                      'text-muted-foreground': status !== 'current',
+                      'text-foreground': status === 'current',
+                    })}
+                  >
+                    {step.description}
+                  </div>
+
+                  {/* Action button for current step */}
+                  {status === 'current' && (
+                    <Link to={step.path} className="underline text-sm text-secondary-foreground">
+                      {index === 0 ? 'Đi tới trang xác thực email ' : 'Đi tới trang thiết lập xác thực 2 lớp'}
+                    </Link>
+                  )}
+
+                  {/* Status indicators */}
+                  {status === 'completed' && <p className="mt-2 text-sm text-primary">✓ Đã hoàn thành</p>}
+                  {status === 'pending' && <p className="mt-2 text-sm text-muted-foreground">Chờ xử lý</p>}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
-      <AlertDescription className="mt-1">{status.description}</AlertDescription>
-      {status.actions}
-    </Alert>
+
+      {/* Completion message */}
+      {verifyEmail === 2 && (
+        <div className="mt-6 rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm text-green-600">
+          <CheckCircle2 className="inline-block h-5 w-5 mr-2" />
+          Tài khoản của bạn đã được xác thực đầy đủ
+        </div>
+      )}
+    </div>
   );
 };
 

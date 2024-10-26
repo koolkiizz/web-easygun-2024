@@ -39,3 +39,41 @@ export function useVerifyEmail() {
     isError,
   };
 }
+
+export function useRequestDuplicateVerify() {
+  const { executePost, isLoading, isError } = usePost<undefined, undefined>(endpoints.requestDuplicateVerify());
+
+  const requestDuplicateVerify = async () => {
+    const response = await executePost(undefined);
+    if (response?.success) {
+      return response?.success;
+    } else {
+      throw new Error(response?.message);
+    }
+  };
+
+  return {
+    requestDuplicateVerify,
+    isLoading,
+    isError,
+  };
+}
+
+export function useDuplicateVerify() {
+  const { executePost, isLoading, isError } = usePost<undefined, Code>(endpoints.duplicateVerify());
+
+  const duplicateVerify = async (payload: Code) => {
+    const response = await executePost(payload);
+    if (response?.success) {
+      return response?.success;
+    } else {
+      throw new Error(response?.message);
+    }
+  };
+
+  return {
+    duplicateVerify,
+    isLoading,
+    isError,
+  };
+}

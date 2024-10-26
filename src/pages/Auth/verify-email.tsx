@@ -1,5 +1,5 @@
 import { AlertCircle } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import VerifyStatus from '@/components/common/verify-status';
@@ -16,12 +16,12 @@ type FormData = {
   verificationCode: string;
 };
 
-const COUNTDOWN_TIME = 60; // 3 minutes in seconds
+const COUNTDOWN_TIME = 60;
 
 const VerifyEmailPage: React.FC = () => {
-  const [countdown, setCountdown] = useState(COUNTDOWN_TIME);
+  const [showVerifyForm, setShowVerifyForm] = useState(false);
+  const [countdown, setCountdown] = useState(0);
   const [isRequestingCode, setIsRequestingCode] = useState(false);
-  const requestInitiatedRef = useRef(false);
   const { toast } = useToast();
 
   const {
@@ -34,14 +34,12 @@ const VerifyEmailPage: React.FC = () => {
   const { requestVerifyEmail } = useRequestVerifyEmail();
   const { userInfo, updateUserInfo } = useAuth();
 
-  // Format seconds to mm:ss
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  // Handle countdown
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (countdown > 0) {
@@ -52,51 +50,34 @@ const VerifyEmailPage: React.FC = () => {
     return () => clearInterval(timer);
   }, [countdown]);
 
-  // Request verification code on component mount
-  useEffect(() => {
-    const requestCode = async () => {
-      // Check if request has already been initiated
-      if (requestInitiatedRef.current) return;
-
-      // Account was verified
-      if (Number(userInfo?.VerifiedEmail) !== 0) return;
-
-      try {
-        requestInitiatedRef.current = true;
-        setIsRequestingCode(true);
-        const response = await requestVerifyEmail();
-        if (response) {
-          toast({
-            title: 'Mã xác thực đã được gửi',
-            description: 'Vui lòng kiểm tra email của bạn',
-          });
-          setCountdown(COUNTDOWN_TIME);
-        } else {
-          toast({
-            variant: 'destructive',
-            title: 'Lỗi',
-            description: 'Không thể gửi mã xác thực',
-          });
-        }
-      } catch (error) {
+  const handleRequestVerify = async () => {
+    try {
+      setIsRequestingCode(true);
+      const response = await requestVerifyEmail();
+      if (response) {
+        toast({
+          title: 'Mã xác thực đã được gửi',
+          description: 'Vui lòng kiểm tra email của bạn',
+        });
+        setShowVerifyForm(true);
+        setCountdown(COUNTDOWN_TIME);
+      } else {
         toast({
           variant: 'destructive',
           title: 'Lỗi',
-          description: 'Đã có lỗi xảy ra khi gửi mã xác thực',
+          description: 'Không thể gửi mã xác thực',
         });
-      } finally {
-        setIsRequestingCode(false);
       }
-    };
-
-    requestCode();
-
-    // Cleanup function
-    return () => {
-      requestInitiatedRef.current = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty dependency array
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Lỗi',
+        description: 'Đã có lỗi xảy ra khi gửi mã xác thực',
+      });
+    } finally {
+      setIsRequestingCode(false);
+    }
+  };
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -114,6 +95,7 @@ const VerifyEmailPage: React.FC = () => {
         description: 'Email của bạn đã được xác thực',
       });
       updateUserInfo({ ...userInfo, VerifiedEmail: '1' });
+      setShowVerifyForm(false);
     } catch (error) {
       toast({
         variant: 'destructive',
@@ -125,34 +107,10 @@ const VerifyEmailPage: React.FC = () => {
 
   const handleResendCode = async () => {
     if (countdown > 0) return;
-
-    try {
-      setIsRequestingCode(true);
-      const response = await requestVerifyEmail();
-      if (response) {
-        toast({
-          title: 'Đã gửi lại mã xác thực',
-          description: 'Vui lòng kiểm tra email của bạn',
-        });
-        setCountdown(COUNTDOWN_TIME);
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Lỗi',
-          description: response || 'Không thể gửi lại mã xác thực',
-        });
-      }
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Lỗi',
-        description: 'Đã có lỗi xảy ra khi gửi lại mã xác thực',
-      });
-    } finally {
-      setIsRequestingCode(false);
-    }
+    await handleRequestVerify();
   };
 
+  // If email is verified, only show VerifyStatus
   if (Number(userInfo?.VerifiedEmail) !== 0) {
     return (
       <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white">
@@ -161,47 +119,62 @@ const VerifyEmailPage: React.FC = () => {
     );
   }
 
+  // Show either VerifyStatus with request button or the verification form
   return (
     <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white">
-      <Card className="w-full border-none shadow-none">
-        <CardHeader>
-          <CardTitle>Xác nhận Email</CardTitle>
-          <CardDescription>
-            Vui lòng điền code đã được gửi tới Email của bạn (đếm ngược: {formatTime(countdown)})
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid w-full items-center gap-8">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="verificationCode">Mã xác thực</Label>
-                <Input
-                  id="verificationCode"
-                  placeholder="Điền mã xác thực"
-                  {...register('verificationCode', {
-                    required: 'Mã xác thực là bắt buộc',
-                  })}
-                />
-                {errors.verificationCode && (
-                  <Alert variant="destructive">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Thất bại</AlertTitle>
-                    <AlertDescription>{errors.verificationCode.message}</AlertDescription>
-                  </Alert>
-                )}
+      {!showVerifyForm ? (
+        <div className="space-y-6">
+          <VerifyStatus verifyEmail={Number(userInfo?.VerifiedEmail)} />
+          <Card className="w-full border-none shadow-none">
+            <CardContent className="pt-6">
+              <Button className="w-full" onClick={handleRequestVerify} disabled={isRequestingCode}>
+                {isRequestingCode ? 'Đang gửi mã xác thực...' : 'Yêu cầu mã xác thực email'}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      ) : (
+        <Card className="w-full border-none shadow-none">
+          <CardHeader>
+            <CardTitle>Xác nhận Email</CardTitle>
+            <CardDescription>
+              Vui lòng điền code đã được gửi tới Email của bạn
+              {countdown > 0 && ` (đếm ngược: ${formatTime(countdown)})`}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="grid w-full items-center gap-8">
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="verificationCode">Mã xác thực</Label>
+                  <Input
+                    id="verificationCode"
+                    placeholder="Điền mã xác thực"
+                    {...register('verificationCode', {
+                      required: 'Mã xác thực là bắt buộc',
+                    })}
+                  />
+                  {errors.verificationCode && (
+                    <Alert variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertTitle>Thất bại</AlertTitle>
+                      <AlertDescription>{errors.verificationCode.message}</AlertDescription>
+                    </Alert>
+                  )}
+                </div>
               </div>
-            </div>
-          </form>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={handleResendCode} disabled={countdown > 0 || isRequestingCode}>
-            {isRequestingCode ? 'Đang gửi...' : 'Gửi lại mã xác thực'}
-          </Button>
-          <Button onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>
-            {isSubmitting ? 'Đang xác thực...' : 'Xác thực'}
-          </Button>
-        </CardFooter>
-      </Card>
+            </form>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button variant="outline" onClick={handleResendCode} disabled={countdown > 0 || isRequestingCode}>
+              {isRequestingCode ? 'Đang gửi...' : 'Gửi lại mã xác thực'}
+            </Button>
+            <Button onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>
+              {isSubmitting ? 'Đang xác thực...' : 'Xác thực'}
+            </Button>
+          </CardFooter>
+        </Card>
+      )}
     </div>
   );
 };
