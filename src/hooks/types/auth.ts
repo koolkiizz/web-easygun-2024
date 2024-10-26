@@ -36,3 +36,10 @@ export interface ChangePasswordCredentials {
   new_password: string;
   re_new_password: string;
 }
+
+export interface RegisterRequest {
+  username: string;
+  password: string;
+  repassword: string;
+  email: string;
+}

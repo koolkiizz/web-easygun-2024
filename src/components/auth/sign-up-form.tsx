@@ -6,6 +6,8 @@ import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import { useRegister } from '@/hooks/useRegister';
 import { ROUTES } from '@/router/constants';
 
 // Define the form schema
@@ -38,13 +40,31 @@ const SignUpForm = () => {
     },
   });
 
+  const { toast } = useToast();
   const navigate = useNavigate();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    navigate(ROUTES.LOGIN);
-    console.log(values);
-    // Here you would typically send the data to your backend
-  }
+  const { register } = useRegister();
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const res = await register({
+        username: values.username,
+        password: values.password,
+        repassword: values.confirmPassword,
+        email: values.email,
+      });
+
+      if (!res) {
+        toast({ title: 'Đăng ký không thành công. Vui lòng thử lại!' });
+        return;
+      }
+
+      toast({ title: 'Đăng ký thành công. Vui lòng đăng nhập vào hệ thống.' });
+      navigate(ROUTES.LOGIN);
+    } catch (error) {
+      toast({ title: 'Đăng ký không thành công. Vui lòng thử lại!' });
+    }
+  };
 
   return (
     <Form {...form}>
