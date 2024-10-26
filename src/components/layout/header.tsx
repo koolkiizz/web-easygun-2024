@@ -9,7 +9,7 @@ import ForgotPasswordIcon from '@/assets/forgot-password.png';
 import LoginIcon from '@/assets/login.png';
 import RegisterIcon from '@/assets/register.png';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hook/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/router/constants';
 import Logo1 from '../../assets/logo-1.png';
 import {

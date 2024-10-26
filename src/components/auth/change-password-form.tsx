@@ -1,12 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import * as z from 'zod';
 
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { useChangePassword } from '@/hooks/useLogin';
+import { ROUTES } from '@/router/constants';
+import { Alert, AlertDescription } from '../ui/alert';
 import { CardTitle } from '../ui/card';
 
 // Define the form schema
@@ -30,20 +35,50 @@ const ChangePasswordForm = () => {
       confirmNewPassword: '',
     },
   });
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const { changePassword } = useChangePassword();
+  const { logout } = useAuth();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // Here you would typically send the request to your backend
-    // For this example, we'll just set a state to show a success message
-    setIsSubmitted(true);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const res = await changePassword({
+        current_password: values.currentPassword,
+        new_password: values.newPassword,
+        re_new_password: values.confirmNewPassword,
+      });
+
+      if (!res) {
+        toast({
+          title: 'Đổi mật khẩu không thành công! Vui lòng thử lại.',
+        });
+        return;
+      }
+      toast({
+        title: 'Đổi mật khẩu thành công!',
+      });
+      logout();
+      setIsSubmitted(true);
+    } catch (error) {
+      toast({
+        title: 'Đổi mật khẩu không thành công! Vui lòng thử lại.',
+      });
+    }
   }
 
   if (isSubmitted) {
     return (
       <Alert>
-        <AlertDescription>Mật khẩu đã được cập nhập.</AlertDescription>
+        <AlertDescription>Mật khẩu đã được cập nhập. Vui lòng đăng nhập lại.</AlertDescription>
+        <Button
+          onClick={() => {
+            navigate(ROUTES.LOGIN);
+          }}
+        >
+          Tới trang đăng nhập
+        </Button>
       </Alert>
     );
   }

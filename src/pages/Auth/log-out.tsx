@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from '@/hook/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/router/constants';
 
 const Logout = () => {

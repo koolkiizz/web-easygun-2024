@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/hook/useAuth';
-import { useLogin } from '@/hook/useLogin';
+import { useAuth } from '@/hooks/useAuth';
+import { useLogin } from '@/hooks/useLogin';
 import { ROUTES } from '@/router/constants';
 import { CardTitle } from '../ui/card';
 
