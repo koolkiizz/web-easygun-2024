@@ -45,15 +45,19 @@ const LoginForm = () => {
   }, [navigate]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     try {
       const res = await getToken(values.username, values.password);
       if (!res) {
         return;
       }
-      login(res.token);
+      login(res);
       // Redirect to homepage
-      navigate(ROUTES.HOMEPAGE);
+
+      if (Number(res.userInfo?.VerifiedEmail) === 0) {
+        navigate(ROUTES.VERIFy_EMAIL);
+      } else {
+        navigate(ROUTES.HOMEPAGE);
+      }
     } catch (error) {
       console.error(error);
     }

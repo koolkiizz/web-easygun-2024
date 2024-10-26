@@ -43,3 +43,7 @@ export interface RegisterRequest {
   repassword: string;
   email: string;
 }
+
+export interface Code {
+  code: string;
+}
