@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hook/useAuth';
+import { useLogin } from '@/hook/useLogin';
 import { ROUTES } from '@/router/constants';
 import { CardTitle } from '../ui/card';
 
@@ -32,8 +33,9 @@ const LoginForm = () => {
       rememberMe: false,
     },
   });
-  const { login } = useAuth();
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const { login: getToken } = useLogin();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -42,15 +44,19 @@ const LoginForm = () => {
     }
   }, [navigate]);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-
-    const dummyToken = 'dummy-token';
-
-    login(dummyToken);
-
-    // Redirect to homepage
-    navigate(ROUTES.HOMEPAGE);
+    try {
+      const res = await getToken(values.username, values.password);
+      if (!res) {
+        return;
+      }
+      login(res.token);
+      // Redirect to homepage
+      navigate(ROUTES.HOMEPAGE);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
