@@ -17,4 +17,6 @@ export const endpoints = {
   requestClearBag: () => `/clearBagPassword`,
   validClearBag: () => `/clearBagPassword/validatetfa`,
   transferHistory: () => `/chargeHistory`,
+  changeEmail: () => `/changeEmail`,
+  validChangeEmail: () => `/changeEmail/confirmvalidatetfa`,
 };

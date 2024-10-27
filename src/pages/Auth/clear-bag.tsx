@@ -63,9 +63,8 @@ const ClearBagPasswordPage: React.FC = () => {
   };
 
   const onRequestSubmit = async (values: RequestFormValues) => {
-    console.log(values);
     try {
-      const response = await requestClearBag();
+      const response = await requestClearBag({ server_id: values.serverId, player_id: values.playerId });
 
       if (response) {
         setStep('verify');

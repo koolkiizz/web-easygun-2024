@@ -51,9 +51,9 @@ const TransferHistoryPage: React.FC = () => {
     }
   };
 
-  const formatCoin = (value: string) => {
+  const formatCoin = (value: string, type: number) => {
     const num = parseInt(value);
-    return num.toLocaleString() + ' VND';
+    return num.toLocaleString() + `${type === 3 ? ' coin' : ' VND'}`;
   };
 
   if (isLoading) {
@@ -85,7 +85,7 @@ const TransferHistoryPage: React.FC = () => {
                   <TableHead>Loại giao dịch</TableHead>
                   <TableHead>Nội dung</TableHead>
                   <TableHead>Server</TableHead>
-                  <TableHead className="text-right">VND</TableHead>
+                  <TableHead className="text-right">Số tiền</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -108,7 +108,7 @@ const TransferHistoryPage: React.FC = () => {
                             : 'text-red-600'
                       }`}
                     >
-                      {formatCoin(item.Value)}
+                      {formatCoin(item.Value, Number(item.TypeCode))}
                     </TableCell>
                   </TableRow>
                 ))}

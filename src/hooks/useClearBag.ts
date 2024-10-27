@@ -1,12 +1,13 @@
 import { endpoints } from './api/endpoints';
 import { usePost } from './api/fetch';
 import { Code } from './types/auth';
+import { ClearBagPayload } from './types/clear-bag';
 
 export function useRequestClearBag() {
-  const { executePost, isLoading, isError } = usePost<undefined, undefined>(endpoints.requestClearBag());
+  const { executePost, isLoading, isError } = usePost<undefined, ClearBagPayload>(endpoints.requestClearBag());
 
-  const requestClearBag = async () => {
-    const response = await executePost(undefined);
+  const requestClearBag = async (payload: ClearBagPayload) => {
+    const response = await executePost(payload);
     if (response?.success) {
       return response?.success;
     } else {

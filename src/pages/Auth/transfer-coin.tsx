@@ -283,6 +283,7 @@ const TransferCoinPage: React.FC = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Số coin chuyển</FormLabel>
+
                       <FormControl>
                         <Input
                           type="number"
@@ -290,6 +291,9 @@ const TransferCoinPage: React.FC = () => {
                           {...field}
                         />
                       </FormControl>
+                      <FormLabel className="italic text-s text-gray-700 font-medium">
+                        *X2 khi nạp lần đầu (tối đa 1,500,000 VND)*
+                      </FormLabel>
                       <FormMessage />
                     </FormItem>
                   )}
