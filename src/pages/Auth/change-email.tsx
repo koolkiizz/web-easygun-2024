@@ -34,7 +34,7 @@ const ChangeEmailPage: React.FC = () => {
   const [canResend, setCanResend] = useState(false);
 
   // Hooks
-  const { userInfo } = useAuth();
+  const { userInfo, updateUserInfo } = useAuth();
   const { changeEmail, isLoading: isChanging } = useChangeEmail();
   const { validChangeEmail, isLoading: isValidating } = useValidChangeEmail();
 
@@ -143,6 +143,9 @@ const ChangeEmailPage: React.FC = () => {
       emailForm.reset();
       verificationForm.reset();
       setStep('email');
+
+      // Remove verify and 2fa
+      updateUserInfo({ ...userInfo, '2fa': '0', VerifiedEmail: '0' });
     } catch (error) {
       toast({
         variant: 'destructive',
