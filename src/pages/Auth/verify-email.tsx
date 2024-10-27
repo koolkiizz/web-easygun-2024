@@ -114,7 +114,7 @@ const VerifyEmailPage: React.FC = () => {
   if (Number(userInfo?.VerifiedEmail) !== 0) {
     return (
       <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white">
-        <VerifyStatus verifyEmail={Number(userInfo?.VerifiedEmail)} />
+        <VerifyStatus verifyEmail={Number(userInfo?.VerifiedEmail)} actived2fa={Number(userInfo?.['2fa'])} />
       </div>
     );
   }
@@ -124,7 +124,7 @@ const VerifyEmailPage: React.FC = () => {
     <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white">
       {!showVerifyForm ? (
         <div className="space-y-6">
-          <VerifyStatus verifyEmail={Number(userInfo?.VerifiedEmail)} />
+          <VerifyStatus verifyEmail={Number(userInfo?.VerifiedEmail)} actived2fa={Number(userInfo?.['2fa'])} />
           <Card className="w-full border-none shadow-none">
             <CardContent className="pt-6">
               <Button className="w-full" onClick={handleRequestVerify} disabled={isRequestingCode}>

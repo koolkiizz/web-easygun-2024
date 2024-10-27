@@ -1,10 +1,10 @@
 import { PASSWORD_VALIDATION } from '@/lib/constants';
 import { endpoints } from './api/endpoints';
 import { usePost } from './api/fetch';
-import { ChangePasswordCredentials, LoginCredentials, LoginResponse } from './types/auth';
+import { ChangePasswordCredentials, Code, LoginCredentials, LoginResponse } from './types/auth';
 
 export function useLogin() {
-  const { executePost, isLoading, isError } = usePost<LoginResponse, LoginCredentials>(endpoints.login());
+  const { executePost, isLoading, isError } = usePost<LoginResponse | undefined, LoginCredentials>(endpoints.login());
 
   const login = async (username: string, password: string) => {
     const response = await executePost({ username, password });
@@ -72,6 +72,25 @@ export function useChangePassword() {
 
   return {
     changePassword,
+    isLoading,
+    isError,
+  };
+}
+
+export function useValidateLogin() {
+  const { executePost, isLoading, isError } = usePost<LoginResponse, Code>(endpoints.validateLogin());
+
+  const validLogin = async (payload: Code) => {
+    const response = await executePost(payload);
+    if (response?.success) {
+      return response?.data;
+    } else {
+      throw new Error(response?.message);
+    }
+  };
+
+  return {
+    validLogin,
     isLoading,
     isError,
   };

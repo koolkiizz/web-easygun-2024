@@ -7,10 +7,11 @@ import { ROUTES } from '@/router/constants';
 
 interface VerifyStatusProps {
   verifyEmail: number;
+  actived2fa: number;
   className?: string;
 }
 
-const VerifyStatus: React.FC<VerifyStatusProps> = ({ verifyEmail, className }) => {
+const VerifyStatus: React.FC<VerifyStatusProps> = ({ verifyEmail, actived2fa, className }) => {
   const steps = [
     {
       title: 'Xác thực email',
@@ -25,14 +26,27 @@ const VerifyStatus: React.FC<VerifyStatusProps> = ({ verifyEmail, className }) =
   ];
 
   const getStepStatus = (stepIndex: number) => {
-    if (verifyEmail >= stepIndex + 1) {
-      return 'completed';
+    // Step 1: Email Verification
+    if (stepIndex === 0) {
+      if (verifyEmail === 1) return 'completed';
+      return verifyEmail === 0 ? 'current' : 'pending';
     }
-    if (verifyEmail === stepIndex) {
-      return 'current';
+
+    // Step 2: 2FA Verification
+    if (stepIndex === 1) {
+      // Only show as completed when both verifyEmail and 2FA are active
+      if (verifyEmail === 1 && actived2fa === 1) return 'completed';
+      // Show as current when email is verified but 2FA isn't
+      if (verifyEmail === 1 && actived2fa === 0) return 'current';
+      // Otherwise pending
+      return 'pending';
     }
+
     return 'pending';
   };
+
+  // Check if all verifications are complete
+  const isFullyVerified = verifyEmail === 1 && actived2fa === 1;
 
   return (
     <div className={cn('w-full p-6 rounded-lg border bg-card', className)}>
@@ -117,7 +131,7 @@ const VerifyStatus: React.FC<VerifyStatusProps> = ({ verifyEmail, className }) =
       </div>
 
       {/* Completion message */}
-      {verifyEmail === 2 && (
+      {isFullyVerified && (
         <div className="mt-6 rounded-lg border border-green-200 bg-green-50 p-4 text-center text-sm text-green-600">
           <CheckCircle2 className="inline-block h-5 w-5 mr-2" />
           Tài khoản của bạn đã được xác thực đầy đủ

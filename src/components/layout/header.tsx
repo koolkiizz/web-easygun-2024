@@ -111,7 +111,7 @@ const NAV_LOGINED = [
   {
     key: 'add-coin',
     label: <img className="h-full" src={AddCoin} alt="add-coin" />,
-    href: ROUTES.HOMEPAGE,
+    href: ROUTES.ADD_COIN,
   },
   {
     key: 'transfer',

@@ -76,6 +76,13 @@ export const router = createBrowserRouter([
           return { Component };
         },
       },
+      {
+        path: ROUTES.ADD_COIN,
+        async lazy() {
+          const { default: Component } = await import('@/pages/Auth/add-coin');
+          return { Component };
+        },
+      },
     ],
   },
 ]);

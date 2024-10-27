@@ -92,7 +92,7 @@ const EmailVerificationFlow: React.FC = () => {
       const response = await duplicateVerify({ code: data.verificationCode });
       if (response) {
         setVerificationStatus('success');
-        updateUserInfo({ ...userInfo, VerifiedEmail: '2' });
+        updateUserInfo({ ...userInfo, '2fa': '1' });
         toast({
           title: 'Xác thực thành công',
           description: 'Email của bạn đã được xác thực 2 lớp',
@@ -137,7 +137,7 @@ const EmailVerificationFlow: React.FC = () => {
             <CardTitle>Thiết lập xác thực email 2 lớp</CardTitle>
           </CardHeader>
           <CardContent>
-            <VerifyStatus verifyEmail={Number(userInfo?.VerifiedEmail)} />
+            <VerifyStatus verifyEmail={Number(userInfo?.VerifiedEmail)} actived2fa={Number(userInfo?.['2fa'])} />
           </CardContent>
           <CardFooter className="flex justify-end">
             <Button onClick={handleRequestCode} disabled={Number(userInfo?.VerifiedEmail) !== 1 || isLoadingRequest}>

@@ -6,4 +6,8 @@ export const endpoints = {
   verifyEmail: () => `/validateVerifyEmail`,
   requestDuplicateVerify: () => `/active2fa`,
   duplicateVerify: () => `/validate2fa`,
+  validateLogin: () => `/login/validatetfa`,
+  acb: () => `/getBankQrCode`,
+  mb: () => `/getMBBankQrCode`,
+  servers: () => `/serverlist`,
 };
