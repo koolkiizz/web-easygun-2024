@@ -7,3 +7,9 @@ export interface BankInfo {
     bank_name: string;
   };
 }
+
+export interface TransferCoinPayload {
+  server_id: string;
+  player_id: string;
+  coin: number;
+}

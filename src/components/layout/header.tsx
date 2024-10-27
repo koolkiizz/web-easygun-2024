@@ -51,14 +51,14 @@ const ACCOUNT_MENU = [
 
 const CHARACTER_MENU = [
   {
-    label: 'Xóa pass rương',
+    label: 'Xóa mật khẩu rương',
     key: 'remove',
-    onClick: undefined,
+    href: ROUTES.CLEAR_BAG,
   },
   {
     label: 'Lịch sử chuyển xu',
     key: 'history',
-    onClick: undefined,
+    href: ROUTES.HISTORY,
   },
 ];
 
@@ -83,6 +83,42 @@ const NAV_NORMAL = [
 
 const NAV_LOGINED = [
   {
+    key: 'add-coin',
+    label: <img className="h-full" src={AddCoin} alt="add-coin" />,
+    href: ROUTES.ADD_COIN,
+  },
+  {
+    key: 'transfer',
+    label: <img className="h-full" src={ChangeCoin} alt="transfer-coin" />,
+    href: ROUTES.TRANSFER_COIN,
+  },
+  {
+    key: 'character',
+    label: (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant={'ghost'} className="p-0 m-0 h-auto hover:bg-transparent  h-[48px]">
+            <img className="h-full" src={Character} alt="character" />,
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-44 z-15 bg-white rounded-[8px]">
+          <DropdownMenuGroup>
+            {CHARACTER_MENU.map(item => (
+              <div className="cursor-pointer hover:bg-slate-200" key={item.key}>
+                <Link to={item.href} className="cursor-pointer" key={item.key}>
+                  <DropdownMenuItem>{item.label}</DropdownMenuItem>
+                </Link>
+
+                <DropdownMenuSeparator />
+              </div>
+            ))}
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
+    href: ROUTES.HOMEPAGE,
+  },
+  {
     key: 'account',
     label: (
       <DropdownMenu>
@@ -99,41 +135,6 @@ const NAV_LOGINED = [
                   <DropdownMenuItem>{item.label}</DropdownMenuItem>
                 </Link>
 
-                <DropdownMenuSeparator />
-              </div>
-            ))}
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
-    href: ROUTES.HOMEPAGE,
-  },
-  {
-    key: 'add-coin',
-    label: <img className="h-full" src={AddCoin} alt="add-coin" />,
-    href: ROUTES.ADD_COIN,
-  },
-  {
-    key: 'transfer',
-    label: <img className="h-full" src={ChangeCoin} alt="transfer-coin" />,
-    href: ROUTES.HOMEPAGE,
-  },
-  {
-    key: 'character',
-    label: (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant={'ghost'} className="p-0 m-0 h-auto hover:bg-transparent  h-[48px]">
-            <img className="h-full" src={Character} alt="character" />,
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-44 z-15 bg-white rounded-[8px]">
-          <DropdownMenuGroup>
-            {CHARACTER_MENU.map(item => (
-              <div className="cursor-pointer hover:bg-slate-200" key={item.key}>
-                <DropdownMenuItem key={item.key} onClick={item.onClick}>
-                  <span className="cursor-pointer">{item.label}</span>
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
               </div>
             ))}

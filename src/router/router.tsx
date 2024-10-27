@@ -83,6 +83,27 @@ export const router = createBrowserRouter([
           return { Component };
         },
       },
+      {
+        path: ROUTES.TRANSFER_COIN,
+        async lazy() {
+          const { default: Component } = await import('@/pages/Auth/transfer-coin');
+          return { Component };
+        },
+      },
+      {
+        path: ROUTES.CLEAR_BAG,
+        async lazy() {
+          const { default: Component } = await import('@/pages/Auth/clear-bag');
+          return { Component };
+        },
+      },
+      {
+        path: ROUTES.HISTORY,
+        async lazy() {
+          const { default: Component } = await import('@/pages/Auth/history-transfer');
+          return { Component };
+        },
+      },
     ],
   },
 ]);

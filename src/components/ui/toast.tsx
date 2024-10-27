@@ -34,9 +34,13 @@ const toastVariants = cva(
         default: 'border bg-background text-foreground',
         destructive: 'destructive group border-destructive bg-destructive text-destructive-foreground',
       },
+      position: {
+        default: 'top-[100px] right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4',
+      },
     },
     defaultVariants: {
       variant: 'default',
+      position: 'default',
     },
   }
 );

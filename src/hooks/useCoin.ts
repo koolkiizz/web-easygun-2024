@@ -2,7 +2,8 @@ import { useState } from 'react';
 
 import { endpoints } from './api/endpoints';
 import { usePost } from './api/fetch';
-import { BankInfo } from './types/coin';
+import { Code } from './types/auth';
+import { BankInfo, TransferCoinPayload } from './types/coin';
 
 export function useGetQRBank() {
   // State for storing bank data
@@ -74,5 +75,43 @@ export function useGetQRBank() {
     isError: isErrorACB || isErrorMB,
     isErrorACB,
     isErrorMB,
+  };
+}
+
+export function useTransferCoin() {
+  const { executePost, isLoading, isError } = usePost<undefined, TransferCoinPayload>(endpoints.transferCoin());
+
+  const transferCoin = async (payload: TransferCoinPayload) => {
+    const response = await executePost(payload);
+    if (response?.success) {
+      return response?.success;
+    } else {
+      throw new Error(response?.message);
+    }
+  };
+
+  return {
+    transferCoin,
+    isLoading,
+    isError,
+  };
+}
+
+export function useValidTransfer() {
+  const { executePost, isLoading, isError } = usePost<undefined, Code>(endpoints.validTransfer());
+
+  const validTransfer = async (payload: Code) => {
+    const response = await executePost(payload);
+    if (response?.success) {
+      return response?.success;
+    } else {
+      throw new Error(response?.message);
+    }
+  };
+
+  return {
+    validTransfer,
+    isLoading,
+    isError,
   };
 }

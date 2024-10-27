@@ -10,4 +10,11 @@ export const endpoints = {
   acb: () => `/getBankQrCode`,
   mb: () => `/getMBBankQrCode`,
   servers: () => `/serverlist`,
+  players: () => `/playerlist`,
+  coinInfo: () => `/coininfo`,
+  transferCoin: () => `/convertCoin`,
+  validTransfer: () => `/convertCoin/validatetfa`,
+  requestClearBag: () => `/clearBagPassword`,
+  validClearBag: () => `/clearBagPassword/validatetfa`,
+  transferHistory: () => `/chargeHistory`,
 };

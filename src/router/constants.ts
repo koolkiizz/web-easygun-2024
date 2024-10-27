@@ -8,5 +8,8 @@ export const ROUTES = {
   VERIFy_EMAIL: '/verify-email',
   DUPLICATE_VERIFY: '/duplicate-verify',
   LOGOUT: '/logout',
-  ADD_COIN: 'add-coin',
+  ADD_COIN: '/add-coin',
+  TRANSFER_COIN: '/transfer-coin',
+  CLEAR_BAG: '/clear-bag',
+  HISTORY: '/history',
 };
