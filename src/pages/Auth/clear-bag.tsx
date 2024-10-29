@@ -54,6 +54,7 @@ const ClearBagPasswordPage: React.FC = () => {
     defaultValues: {
       code: '',
     },
+    mode: 'onChange',
   });
 
   const handleServerChange = (value: string) => {
@@ -65,13 +66,14 @@ const ClearBagPasswordPage: React.FC = () => {
   const onRequestSubmit = async (values: RequestFormValues) => {
     try {
       const response = await requestClearBag({ server_id: values.serverId, player_id: values.playerId });
-
       if (response) {
         setStep('verify');
         toast({
           title: 'Thành công',
           description: 'Vui lòng kiểm tra email để lấy mã xác thực',
         });
+
+        verificationForm.reset();
       }
     } catch (error) {
       toast({
@@ -116,7 +118,11 @@ const ClearBagPasswordPage: React.FC = () => {
           </CardHeader>
           <CardContent>
             <Form {...verificationForm}>
-              <form onSubmit={verificationForm.handleSubmit(onVerificationSubmit)} className="space-y-6">
+              <form
+                onSubmit={verificationForm.handleSubmit(onVerificationSubmit)}
+                className="space-y-6"
+                id="valid-clear-bag"
+              >
                 <FormField
                   control={verificationForm.control}
                   name="code"
@@ -124,7 +130,19 @@ const ClearBagPasswordPage: React.FC = () => {
                     <FormItem>
                       <FormLabel>Mã xác thực</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Nhập mã xác thực" />
+                        <Input
+                          type="text"
+                          placeholder="Nhập mã xác thực"
+                          {...field}
+                          value={verificationForm.getValues('code')}
+                          onChange={e => {
+                            const value = e.target.value;
+                            verificationForm.setValue('code', value, {
+                              shouldValidate: true,
+                              shouldDirty: true,
+                            });
+                          }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -142,7 +160,11 @@ const ClearBagPasswordPage: React.FC = () => {
                   >
                     Quay lại
                   </Button>
-                  <Button type="submit" disabled={isValidating}>
+                  <Button
+                    type="submit"
+                    disabled={isValidating || !verificationForm.formState.isValid}
+                    form="valid-clear-bag"
+                  >
                     {isValidating ? 'Đang xác thực...' : 'Xác thực'}
                   </Button>
                 </div>
@@ -164,7 +186,7 @@ const ClearBagPasswordPage: React.FC = () => {
         </CardHeader>
         <CardContent>
           <Form {...requestForm}>
-            <form onSubmit={requestForm.handleSubmit(onRequestSubmit)} className="space-y-6">
+            <form onSubmit={requestForm.handleSubmit(onRequestSubmit)} className="space-y-6" id="clear-bag">
               {/* Server Selection */}
               <FormField
                 control={requestForm.control}
@@ -233,6 +255,7 @@ const ClearBagPasswordPage: React.FC = () => {
               <Button
                 type="submit"
                 className="w-full"
+                form="clear-bag"
                 disabled={
                   requestForm.formState.isSubmitting ||
                   loadingPlayers ||

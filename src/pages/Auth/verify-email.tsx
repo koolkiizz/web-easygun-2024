@@ -113,7 +113,7 @@ const VerifyEmailPage: React.FC = () => {
   // If email is verified, only show VerifyStatus
   if (Number(userInfo?.VerifiedEmail) !== 0) {
     return (
-      <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white">
+      <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white rounded-lg">
         <VerifyStatus verifyEmail={Number(userInfo?.VerifiedEmail)} actived2fa={Number(userInfo?.['2fa'])} />
       </div>
     );
@@ -121,7 +121,7 @@ const VerifyEmailPage: React.FC = () => {
 
   // Show either VerifyStatus with request button or the verification form
   return (
-    <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white">
+    <div className="min-w-[500px] max-w-[600px] mx-auto mt-[10vh] bg-white rounded-lg">
       {!showVerifyForm ? (
         <div className="space-y-6">
           <VerifyStatus verifyEmail={Number(userInfo?.VerifiedEmail)} actived2fa={Number(userInfo?.['2fa'])} />

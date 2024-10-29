@@ -9,7 +9,7 @@ const PrimaryLayout: React.FC = () => {
       <header className="fixed top-0 left-0 w-full h-[90px] z-0">
         <Header />
       </header>
-      <main className="mt-[90px] h-[calc(100vh-90px)] overflow-auto">
+      <main className="mt-[90px] h-[calc(100vh-90px)] overflow-auto bg-black">
         <Outlet />
       </main>
     </div>
