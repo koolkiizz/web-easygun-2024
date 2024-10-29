@@ -29,12 +29,4 @@
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.jsx", "scripts", "vite.config.ts"],
   "exclude": ["node_modules"]
-  // "references": [
-  //   {
-  //     "path": "./tsconfig.app.json"
-  //   },
-  //   {
-  //     "path": "./tsconfig.node.json"
-  //   }
-  // ],
 }

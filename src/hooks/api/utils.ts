@@ -1,41 +1,41 @@
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosHeaders, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
-const API_BASE_URL = 'http://prod.easygunny.xyz/api';
-
-// Token utilities
-const AUTH_TOKEN_KEY = 'token';
+export const config = {
+  API_BASE_URL: '/api', // Always use the proxy path in development
+  withCredentials: false, // Set to false to avoid CORS issues
+  AUTH_TOKEN_KEY: 'token',
+};
 
 const getToken = (): string | null => {
-  return localStorage.getItem(AUTH_TOKEN_KEY);
+  return localStorage.getItem(config.AUTH_TOKEN_KEY);
 };
 
 const api: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: config.API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json, text/plain, */*',
     'User-Agent': 'RestSharp/105.2.3.0',
+    // Add these headers to help bypass Cloudflare
+    // 'CF-Access-Client-Id': 'YOUR_CLIENT_ID',
+    // 'CF-Access-Client-Secret': 'YOUR_CLIENT_SECRET',
   },
-  withCredentials: true,
+  withCredentials: false,
 });
 
-// Request interceptor
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = getToken();
+    const headers = config.headers as AxiosHeaders;
 
-    if (token && config.headers) {
-      // Ensure headers object exists
-      config.headers = config.headers || {};
-
-      // Set authorization header
-      config.headers.Authorization = `Bearer ${token}`;
-
-      // Log for debugging (remove in production)
-      console.log('Request headers:', config.headers);
-    } else {
-      console.warn('No token found in localStorage');
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
     }
+
+    // Add additional headers that might help bypass Cloudflare
+    headers.set('User-Agent', 'RestSharp/105.2.3.0');
+    headers.set('Origin', 'http://prod.easygunny.xyz');
+    headers.set('Referer', 'http://prod.easygunny.xyz/');
 
     return config;
   },
@@ -44,24 +44,19 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-// Response interceptor
+// Response interceptor for handling errors
 api.interceptors.response.use(
-  response => {
-    return response;
-  },
+  response => response,
   error => {
     if (error.response?.status === 401) {
-      // Handle unauthorized error (token expired or invalid)
-      localStorage.removeItem(AUTH_TOKEN_KEY);
-      // You might want to redirect to login page or refresh token here
+      localStorage.removeItem(config.AUTH_TOKEN_KEY);
       window.location.href = '/login';
     }
     return Promise.reject(error);
   }
 );
 
-// Enhanced API methods with better error handling
+// API methods
 export const fetcher = async <T>(url: string): Promise<T> => {
   try {
     const response = await api.get<T>(url);
@@ -102,7 +97,6 @@ export const deleter = async <T>(url: string): Promise<T> => {
   }
 };
 
-// Error handling utility
 const handleApiError = (error: unknown) => {
   if (axios.isAxiosError(error)) {
     console.error('API Error:', {
@@ -110,15 +104,6 @@ const handleApiError = (error: unknown) => {
       status: error.response?.status,
       data: error.response?.data,
     });
-
-    // You might want to handle specific error cases here
-    if (error.response?.status === 401) {
-      console.error('Unauthorized access');
-    } else if (error.response?.status === 403) {
-      console.error('Forbidden access');
-    } else if (error.response?.status === 404) {
-      console.error('Resource not found');
-    }
   } else {
     console.error('Unknown error:', error);
   }
@@ -129,16 +114,4 @@ export const apiClient = {
   post: poster,
   put: putter,
   delete: deleter,
-};
-
-// Auth token management utilities
-export const authUtils = {
-  setToken: (token: string) => {
-    localStorage.setItem(AUTH_TOKEN_KEY, token);
-  },
-  getToken,
-  removeToken: () => {
-    localStorage.removeItem(AUTH_TOKEN_KEY);
-  },
-  hasToken: () => !!getToken(),
 };

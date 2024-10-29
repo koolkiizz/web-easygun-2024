@@ -100,8 +100,8 @@ const TransferCoinPage: React.FC = () => {
         return;
       }
 
-      const selectedServer = serverData?.find(s => s.ServerID.toString() === values.serverId);
-      const selectedPlayer = playerData?.find(p => p.UserId.toString() === values.playerId);
+      // const selectedServer = serverData?.find(s => s.ServerID.toString() === values.serverId);
+      // const selectedPlayer = playerData?.find(p => p.UserID.toString() === values.playerId);
 
       const res = await transferCoin({
         server_id: values.serverId,
@@ -119,19 +119,25 @@ const TransferCoinPage: React.FC = () => {
       }
 
       // Store transfer details and show verification dialog
-      setTransferDetails({
-        serverId: values.serverId,
-        playerId: values.playerId,
-        amount: amount,
-        serverName: selectedServer?.ServerName,
-        playerName: selectedPlayer?.NickName,
-      });
-      setShowVerification(true);
+      // setTransferDetails({
+      //   serverId: values.serverId,
+      //   playerId: values.playerId,
+      //   amount: amount,
+      //   serverName: selectedServer?.ServerName,
+      //   playerName: selectedPlayer?.NickName,
+      // });
+      // setShowVerification(true);
 
+      // toast({
+      //   title: 'Yêu cầu xác thực',
+      //   description: 'Vui lòng nhập mã xác thực đã được gửi đến email của bạn',
+      // });
       toast({
-        title: 'Yêu cầu xác thực',
-        description: 'Vui lòng nhập mã xác thực đã được gửi đến email của bạn',
+        title: 'Chúc mừng',
+        description: 'Chuyển xu thành công, nhận xu trong game nhé!',
       });
+      transferForm.reset();
+      refetchCoin();
     } catch (error) {
       toast({
         variant: 'destructive',
@@ -265,7 +271,7 @@ const TransferCoinPage: React.FC = () => {
                         </FormControl>
                         <SelectContent>
                           {playerData?.map(player => (
-                            <SelectItem key={player.UserId} value={player.UserId.toString()}>
+                            <SelectItem key={player.UserID} value={player.UserID.toString()}>
                               {player.NickName}
                             </SelectItem>
                           ))}
@@ -292,7 +298,10 @@ const TransferCoinPage: React.FC = () => {
                         />
                       </FormControl>
                       <FormLabel className="italic text-s text-gray-700 font-medium">
-                        *X2 khi nạp lần đầu (tối đa 1,500,000 VND)*
+                        **X2 khi nạp lần đầu (tối đa 1,500,000 VND)**
+                      </FormLabel>
+                      <FormLabel className="italic text-s text-gray-700 font-medium block">
+                        **Tối thiếu 600 coin**
                       </FormLabel>
                       <FormMessage />
                     </FormItem>

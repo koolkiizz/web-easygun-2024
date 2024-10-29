@@ -218,7 +218,7 @@ const ClearBagPasswordPage: React.FC = () => {
                       </FormControl>
                       <SelectContent>
                         {playerData?.map(player => (
-                          <SelectItem key={player.UserId} value={player.UserId.toString()}>
+                          <SelectItem key={player.UserID} value={player.UserID.toString()}>
                             {player.NickName}
                           </SelectItem>
                         ))}

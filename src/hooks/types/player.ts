@@ -4,7 +4,7 @@ export interface ServerItem {
 }
 
 export interface PlayerItem {
-  UserId: string;
+  UserID: string;
   NickName: string;
 }
 

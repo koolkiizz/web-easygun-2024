@@ -20,9 +20,25 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://prod.easygunny.com',
+        target: 'http://prod.easygunny.xyz',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, ''),
+        secure: false,
+        headers: {
+          'User-Agent': 'RestSharp/105.2.3.0',
+          Origin: 'http://prod.easygunny.xyz',
+          Referer: 'http://prod.easygunny.xyz/',
+        },
+        configure: proxy => {
+          proxy.on('error', err => {
+            console.log('proxy error', err);
+          });
+          proxy.on('proxyReq', (proxyReq, req) => {
+            console.log('Sending Request to the Target:', proxyReq, req.method, req.url);
+          });
+          proxy.on('proxyRes', (proxyRes, req) => {
+            console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
+          });
+        },
       },
     },
   },
